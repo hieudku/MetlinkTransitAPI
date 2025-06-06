@@ -8,12 +8,13 @@ type Prediction = {
 type Props = {
   predictions: Prediction[];
   stopId: string;
+  stopName: string;
 };
 
-export default function PredictionPanel({ predictions, stopId }: Props) {
+export default function PredictionPanel({ predictions, stopId, stopName }: Props) {
   return (
     <div className="prediction-panel">
-      <h3>Predictions for Stop {stopId}</h3>
+      <h3>Predictions for {stopName} ({stopId}) {stopId}</h3>
       {predictions.length === 0 ? (
         <p>No departures listed at the moment.</p>
       ) : (

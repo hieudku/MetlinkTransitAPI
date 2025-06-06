@@ -22,7 +22,7 @@ function App() {
   const [selectedStop, setSelectedStop] = useState<string>('');
   const [predictions, setPredictions] = useState<Prediction[]>([]);
   const [search, setSearch] = useState('');
-
+  const selectedStopObj = stops.find((s) => s.stopId === selectedStop);
   useEffect(() => {
     fetch('/api/metlink/stops')
       .then(res => res.json())
@@ -75,8 +75,11 @@ function App() {
         onSelect={setSelectedStop} 
         selectedStopId={selectedStop}/>
       </div>
-      {selectedStop && (
-        <PredictionPanel stopId={selectedStop} predictions={predictions} />
+      {selectedStop && selectedStopObj && (
+        <PredictionPanel 
+          stopId={selectedStop} 
+          predictions={predictions} 
+          stopName={selectedStopObj.stopName}/>
       )}
     </div>
   );
