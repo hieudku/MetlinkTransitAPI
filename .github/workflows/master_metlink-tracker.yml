@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - metlink-tracker
+name: Build and deploy fullstack Metlink Tracker
 
 on:
   push:
@@ -12,28 +12,42 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    permissions:
-      contents: read #This is required for actions/checkout
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up .NET Core
+      - name: Set up .NET 8
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      - name: Set up Node.js (for React)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
 
-      - name: dotnet publish
-        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+      - name: Install React dependencies
+        working-directory: ./metlink-frontend
+        run: npm install
 
-      - name: Upload artifact for deployment job
+      - name: Build React app
+        working-directory: ./metlink-frontend
+        run: npm run build
+
+      - name: Copy React build to ASP.NET Core wwwroot
+        run: |
+          if exist "MetlinkTransitAPI\wwwroot" rmdir /s /q MetlinkTransitAPI\wwwroot
+          xcopy /s /e /y metlink-frontend\build MetlinkTransitAPI\wwwroot
+
+      - name: Publish ASP.NET Core app
+        run: dotnet publish MetlinkTransitAPI/MetlinkTransitAPI.csproj -c Release -o publish_output
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          name: fullstack-app
+          path: publish_output
 
   deploy:
     runs-on: windows-latest
@@ -42,21 +56,21 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
+      id-token: write
+      contents: read
 
     steps:
-      - name: Download artifact from build job
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: .net-app
-      
+          name: fullstack-app
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C834EA81EDBE435EBFCBC3344F93B071 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6B1E82F25DDA4E1895D720E8765CD474 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B078BE3251254C729A5207E2C270645B }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -65,4 +79,3 @@ jobs:
           app-name: 'metlink-tracker'
           slot-name: 'Production'
           package: .
-          
