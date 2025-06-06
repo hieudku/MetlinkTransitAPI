@@ -20,7 +20,7 @@ export default function PredictionPanel({ predictions, stopId }: Props) {
         <ul>
           {predictions.map((p, i) => (
             <li key={i}>
-              Line {p.line} departing at {p.departure}
+            {p.line ? `Line ${p.line}` : 'Unknown line'} departing at {p.departure || 'Unknown time'}
             </li>
           ))}
         </ul>
