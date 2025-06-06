@@ -23,6 +23,16 @@ function App() {
   const [predictions, setPredictions] = useState<Prediction[]>([]);
   const [search, setSearch] = useState('');
   const selectedStopObj = stops.find((s) => s.stopId === selectedStop);
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     fetch('/api/metlink/stops')
       .then(res => res.json())
@@ -61,8 +71,10 @@ function App() {
 
      return (
     <div className="container">
-      <h1>Metlink Stops</h1>
-
+      <h1>Bus Stops & Stations</h1>
+      <p style={{ fontSize: '0.9rem', color: '#555'}}>
+        Current time is {currentTime.toLocaleTimeString()}
+      </p>
       <input
         placeholder="Search stops..."
         className="search-bar"
