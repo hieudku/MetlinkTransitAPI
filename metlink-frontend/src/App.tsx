@@ -147,14 +147,18 @@ const App = () => {
       <Router>
         <CssBaseline />
         <Navbar />
-        <Routes>
-          <Route path="/" element={<StopBrowserPage />} />
-          <Route path="/map" element={<MapPage />} />
-          <Route path="/about" element={<AboutPage />} />
-        </Routes>
+        <Box display="flex" flexDirection="column" minHeight="100vh">
+          <Box component="main" flex={1}>
+            <Routes>
+              <Route path="/" element={<StopBrowserPage />} />
+              <Route path="/map" element={<MapPage />} />
+              <Route path="/about" element={<AboutPage />} />
+            </Routes>
+        </Box>
         <CustomAppBar>
           Metlink Tracker - Built with React, ASP.NET Core & MUI
         </CustomAppBar>
+        </Box>
       </Router>
     </ThemeProvider>
   );

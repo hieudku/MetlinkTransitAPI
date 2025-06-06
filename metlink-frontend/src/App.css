@@ -37,6 +37,30 @@
   }
 }
 
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  background-color: #e4e0e0;
+  font-family: 'Poppins', sans-serif;
+}
+
+#root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+
+
 .container {
   padding: 20px;
   font-family: 'Segoe UI', sans-serif;
