@@ -1,24 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react';
+
+type Stop = {
+  stopId: string;
+  stopName: string;
+  latitude: number;
+  longitude: number;
+};
 
 function App() {
+  const [stops, setStops] = useState<Stop[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/metlink/stops')
+      .then(res => res.json())
+      .then(data => {
+        setStops(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Failed to fetch stops', err);
+        setLoading(false);
+      });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ padding: 20 }}>
+      <h1>Metlink Stops</h1>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <ul>
+          {stops.slice(0, 20).map(stop => (
+            <li key={stop.stopId}>
+              {stop.stopName} ({stop.stopId})
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

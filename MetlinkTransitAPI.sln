@@ -1,9 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35919.96 d17.13
+VisualStudioVersion = 17.13.35919.96
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetlinkTransitAPI", "MetlinkTransitAPI\MetlinkTransitAPI.csproj", "{AC754948-552E-4A12-8595-F87A4400E567}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "metlink-frontend", "metlink-frontend\", "{519CBDEC-D4AA-8485-C407-3D54220F7EA1}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.VirtualPath = "/localhost_60294"
+		Debug.AspNetCompiler.PhysicalPath = "metlink-frontend\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_60294\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_60294"
+		Release.AspNetCompiler.PhysicalPath = "metlink-frontend\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_60294\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "60294"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +34,10 @@ Global
 		{AC754948-552E-4A12-8595-F87A4400E567}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC754948-552E-4A12-8595-F87A4400E567}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC754948-552E-4A12-8595-F87A4400E567}.Release|Any CPU.Build.0 = Release|Any CPU
+		{519CBDEC-D4AA-8485-C407-3D54220F7EA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{519CBDEC-D4AA-8485-C407-3D54220F7EA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{519CBDEC-D4AA-8485-C407-3D54220F7EA1}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{519CBDEC-D4AA-8485-C407-3D54220F7EA1}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
