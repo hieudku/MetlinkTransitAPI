@@ -36,7 +36,7 @@ namespace MetlinkTransitAPI.Services
         }
 
         /*
-         * 
+         * STOPS
          * Parse JSON response from the API.
          * Fields include: stop_id, stop_name, stop_lat, stop_lon.
          * 
@@ -61,6 +61,35 @@ namespace MetlinkTransitAPI.Services
                 });
             }
             return stops;
+        }
+
+        /*
+         * ROUTES
+         * Parse JSON response from the API.
+         * Fields include: route_id, route_short_name, route_long_name, route_type .
+         * 
+         */
+        public async Task<List<RouteDto>> GetRoutesAsync()
+        {
+            var response = await _httpClient.GetAsync("gtfs/routes");
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(json);
+
+            var routes = new List<RouteDto>();
+            foreach (var route in doc.RootElement.EnumerateArray())
+            {
+                routes.Add(new RouteDto
+                {
+                    RouteId = route.GetProperty("route_id").GetString(),
+                    RouteShortName = route.GetProperty("route_short_name").GetString(),
+                    RouteLongName = route.GetProperty("route_long_name").GetString(),
+                    RouteType = route.GetProperty("route_type").GetRawText() // parse to readable format
+                });
+            }
+
+            return routes;
         }
     }
 }

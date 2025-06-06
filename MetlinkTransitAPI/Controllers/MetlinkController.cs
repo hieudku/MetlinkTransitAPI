@@ -15,6 +15,7 @@ namespace MetlinkTransitAPI.Controllers
             _service = service;
         }
 
+
         [HttpGet("stop-predictions/{stopId}")]
         public async Task<IActionResult> GetPredictions(string stopId)
         {
@@ -22,11 +23,20 @@ namespace MetlinkTransitAPI.Controllers
             return Content(data, "application/json");
         }
 
+
         [HttpGet("stops")]
         public async Task<IActionResult> GetStops()
         {
             var stops = await _service.GetStopsAsync();
             return Ok(stops);
+        }
+
+
+        [HttpGet("routes")]
+        public async Task<IActionResult> GetRoutes()
+        {
+            var routes = await _service.GetRoutesAsync();
+            return Ok(routes);
         }
 
     }
