@@ -42,11 +42,6 @@ const theme = createTheme({
   },
 });
 
-const CustomAppBar = styled(AppBar)(() => ({
-  backgroundColor: '#1e1e1e',
-  borderBottom: '2px solid #ff6f00',
-}));
-
 const StopBrowser = () => {
   const [stops, setStops] = useState<Stop[]>([]);
   const [filteredStops, setFilteredStops] = useState<Stop[]>([]);
