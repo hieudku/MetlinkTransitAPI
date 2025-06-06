@@ -1,0 +1,6 @@
+@MetlinkTransitAPI_HostAddress = http://localhost:5290
+
+GET {{MetlinkTransitAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
