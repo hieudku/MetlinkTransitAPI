@@ -1,6 +1,8 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using MetlinkTransitAPI.Models;
+using System.Text.Json;
 
 namespace MetlinkTransitAPI.Services
 {
@@ -31,6 +33,34 @@ namespace MetlinkTransitAPI.Services
             response.EnsureSuccessStatusCode();
 
             return await response.Content.ReadAsStringAsync();
+        }
+
+        /*
+         * 
+         * Parse JSON response from the API.
+         * Fields include: stop_id, stop_name, stop_lat, stop_lon.
+         * 
+         */
+        public async Task<List<StopDto>> GetStopsAsync()
+        {
+            var response = await _httpClient.GetAsync("gtfs/stops");
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(json);
+
+            var stops = new List<StopDto>();
+            foreach (var element in doc.RootElement.EnumerateArray())
+            {
+                stops.Add(new StopDto
+                {
+                    StopId = element.GetProperty("stop_id").GetString(),
+                    StopName = element.GetProperty("stop_name").GetString(),
+                    Latitude = element.GetProperty("stop_lat").GetDouble(),
+                    Longtitude = element.GetProperty("stop_lon").GetDouble()
+                });
+            }
+            return stops;
         }
     }
 }
