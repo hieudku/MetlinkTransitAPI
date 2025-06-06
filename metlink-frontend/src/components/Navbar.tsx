@@ -33,9 +33,11 @@ const Navbar = () => {
               <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer}>
                 <List>
                   {menuItems.map((item) => (
-                    <ListItem button key={item.path} component={Link} to={item.path} onClick={toggleDrawer}>
+                    <ListItem key={item.path} disablePadding>
+                    <ListItemButton component={Link} to={item.path} onClick={toggleDrawer}>
                       <ListItemText primary={item.label} />
-                    </ListItem>
+                    </ListItemButton>
+                  </ListItem>
                   ))}
                 </List>
               </Drawer>
