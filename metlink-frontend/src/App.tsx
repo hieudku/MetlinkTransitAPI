@@ -70,7 +70,10 @@ function App() {
         onChange={(e) => setSearch(e.target.value)}
       />
       <div className="stop-list-container">
-      <StopList stops={filteredStops} onSelect={setSelectedStop} />
+      <StopList 
+        stops={filteredStops} 
+        onSelect={setSelectedStop} 
+        selectedStopId={selectedStop}/>
       </div>
       {selectedStop && (
         <PredictionPanel stopId={selectedStop} predictions={predictions} />

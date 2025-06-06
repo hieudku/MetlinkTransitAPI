@@ -37,6 +37,15 @@
   }
 }
 
+body {
+
+}
+
+html {
+  background-color: #d6d3cf;
+  color:#333436;
+}
+
 .container {
   padding: 20px;
   font-family: 'Segoe UI', sans-serif;
@@ -63,8 +72,14 @@
   border-bottom: 1px solid #eee;
 }
 
+.stop-item.selected {
+  background-color: #d7e6f3;
+  font-weight: bold;
+  border-left: 4px solid #1a73e8;
+}
+
 .stop-item:hover {
-  background-color: #9bc678;
+  background-color: #dbdfd7;
 }
 
 .prediction-panel {
@@ -95,5 +110,5 @@
 }
 
 .stop-item:hover {
-  background-color: #d6eaee;
+  background-color: #eff0f0;
 }
