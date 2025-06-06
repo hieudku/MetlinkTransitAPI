@@ -16,7 +16,7 @@ import StopList from './components/stopList';
 import PredictionPanel from './components/predictionPanel';
 import MapPage from './pages/MapPage';
 import AboutPage from './pages/AboutPage';
-
+import Footer from '../src/components/Footer';
 import './App.css';
 
 const CustomAppBar = styled('div')({
@@ -146,22 +146,20 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <Router>
         <CssBaseline />
-        <Navbar />
-        <Box display="flex" flexDirection="column" minHeight="100vh">
-          <Box component="main" flex={1}>
-            <Routes>
-              <Route path="/" element={<StopBrowserPage />} />
-              <Route path="/map" element={<MapPage />} />
-              <Route path="/about" element={<AboutPage />} />
-            </Routes>
-        </Box>
-        <CustomAppBar>
-          Metlink Tracker - Built with React, ASP.NET Core & MUI
-        </CustomAppBar>
-        </Box>
-      </Router>
-    </ThemeProvider>
-  );
+          <Navbar />
+            <Box display="flex" flexDirection="column" minHeight="100vh">
+              <Box component="main" flex={1}>
+                <Routes>
+                  <Route path="/" element={<StopBrowserPage />} />
+                  <Route path="/map" element={<MapPage />} />
+                  <Route path="/about" element={<AboutPage />} />
+                </Routes>
+              </Box>
+            <Footer />
+          </Box>
+        </Router>
+      </ThemeProvider>
+    );
 };
 
 export default App;

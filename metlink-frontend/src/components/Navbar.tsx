@@ -1,5 +1,16 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Button, IconButton, Drawer, List, ListItem, ListItemText, useTheme, useMediaQuery } from '@mui/material';
+import { 
+  AppBar, 
+  Toolbar, 
+  Typography, 
+  Button, 
+  IconButton, 
+  Drawer, 
+  List, 
+  ListItem, 
+  ListItemText, 
+  useTheme, 
+  useMediaQuery } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 import { ListItemButton } from '@mui/material'
@@ -19,8 +30,13 @@ const Navbar = () => {
 
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ backgroundColor: '#003B4C' }}>
         <Toolbar>
+          <img
+            src="metlink.png"
+            alt="Metlink Logo"
+            style={{ height: 32, marginRight: 12 }}
+          />
           <Typography variant="h6" style={{ flexGrow: 1 }}>
             Metlink Tracker
           </Typography>
