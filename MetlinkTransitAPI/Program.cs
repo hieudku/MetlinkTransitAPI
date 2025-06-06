@@ -1,3 +1,5 @@
+using MetlinkTransitAPI.Services;
+
 namespace MetlinkTransitAPI
 {
     public class Program
@@ -9,6 +11,8 @@ namespace MetlinkTransitAPI
             // Add services to the container.
 
             builder.Services.AddControllers();
+
+            builder.Services.AddHttpClient<MetlinkServices>();
 
             var app = builder.Build();
 
