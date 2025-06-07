@@ -43,6 +43,11 @@ jobs:
           Remove-Item -Recurse -Force "MetlinkTransitAPI\wwwroot\*" -ErrorAction SilentlyContinue
           Copy-Item -Recurse -Force "metlink-frontend\build\*" "MetlinkTransitAPI\wwwroot"
 
+      - name: Check contents of wwwroot before publishing
+        run: |
+          Write-Host "Files inside MetlinkTransitAPI/wwwroot:"
+          Get-ChildItem -Recurse -Path "MetlinkTransitAPI\wwwroot"
+
 
       - name: Publish ASP.NET Core app
         run: dotnet publish MetlinkTransitAPI/MetlinkTransitAPI.csproj -c Release -o publish_output
@@ -59,13 +64,13 @@ jobs:
     permissions:
       id-token: write
       contents: read
-
+  
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: fullstack-app
-
+  
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -73,11 +78,11 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
           client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-
+  
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'metlink-tracker'
           slot-name: 'Production'
-          package: .
+          package: publish_output
