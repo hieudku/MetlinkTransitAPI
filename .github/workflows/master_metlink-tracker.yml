@@ -40,12 +40,8 @@ jobs:
       
       - name: Copy React build into published wwwroot
         run: |
-          if (!(Test-Path "publish_output\wwwroot")) {
-            New-Item -ItemType Directory -Force -Path "publish_output\wwwroot"
-          }
-          Remove-Item -Recurse -Force "publish_output\wwwroot\*" -ErrorAction SilentlyContinue
-          Copy-Item -Recurse -Force "metlink-frontend\build\*" "publish_output\wwwroot"
-
+          Remove-Item -Recurse -Force "publish_output/wwwroot/*" -ErrorAction SilentlyContinue
+          Copy-Item -Recurse -Force "metlink-frontend/build/*" "publish_output/wwwroot/"
 
       - name: Check contents of wwwroot before publishing
         run: |
@@ -86,4 +82,4 @@ jobs:
         with:
           app-name: 'metlink-tracker'
           slot-name: 'Production'
-          package: fullstack-app
+          package: ./fullstack-app
