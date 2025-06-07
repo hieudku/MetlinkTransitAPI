@@ -29,5 +29,4 @@ const Footer: React.FC = () => {
     </Box>
   );
 };
-/* Test trigger pipeline */
 export default Footer;
