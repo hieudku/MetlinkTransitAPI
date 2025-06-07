@@ -1,5 +1,5 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
+# Docs: https://github.com/Azure/webapps-deploy
+# https://github.com/Azure/actions
 
 name: Build and deploy fullstack Metlink Tracker
 
@@ -37,19 +37,16 @@ jobs:
 
       - name: Publish ASP.NET Core app
         run: dotnet publish MetlinkTransitAPI/MetlinkTransitAPI.csproj -c Release -o publish_output
-      
+
       - name: Copy React build contents into published wwwroot
         run: |
-          $source = Resolve-Path "metlink-frontend/build"
           if (!(Test-Path "publish_output/wwwroot")) {
             New-Item -ItemType Directory -Force -Path "publish_output/wwwroot" | Out-Null
           }
-          Copy-Item -Recurse -Force "$source\*" "publish_output/wwwroot"
-          
-      - name: Check contents of wwwroot before publishing
-        run: |
-          Write-Host "Files inside MetlinkTransitAPI/wwwroot:"
-          Get-ChildItem -Recurse -Path "MetlinkTransitAPI\wwwroot"
+          Copy-Item -Recurse -Force "metlink-frontend/build/" "publish_output/wwwroot"
+
+      - name: List final wwwroot contents (debug)
+        run: Get-ChildItem -Recurse -Path "publish_output/wwwroot"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -63,14 +60,14 @@ jobs:
     permissions:
       id-token: write
       contents: read
-  
+
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: fullstack-app
           path: fullstack-app
-  
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -78,11 +75,10 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
           client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-  
+
       - name: Deploy to Azure Web App
-        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'metlink-tracker'
           slot-name: 'Production'
-          package: ./fullstack-app
+          package: fullstack-app
