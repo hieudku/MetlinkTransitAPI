@@ -47,7 +47,7 @@ jobs:
       - name: Check final wwwroot contents
         run: |
           Write-Host "---- Contents of publish_output/wwwroot ----"
-          Get-ChildItem -Path "publish_output/wwwroot"
+          Get-ChildItem -Recurse -Path "MetlinkTransitAPI/publish_output/wwwroot"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
