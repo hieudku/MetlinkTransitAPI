@@ -38,8 +38,11 @@ jobs:
 
       - name: Copy React build into published wwwroot
         run: |
-          mkdir publish_output/wwwroot
-          cp -r metlink-frontend/build/* publish_output/wwwroot
+          mkdir -p MetlinkTransitAPI/publish_output/wwwroot
+          cp -r metlink-frontend/build/* MetlinkTransitAPI/publish_output/wwwroot/
+          
+          echo "Listing contents after copy:"
+          find MetlinkTransitAPI/publish_output/wwwroot
 
       - name: Check final wwwroot contents
         run: |
