@@ -42,7 +42,7 @@ jobs:
           cp -r metlink-frontend/build/* MetlinkTransitAPI/publish_output/wwwroot/
           
           echo "Listing contents after copy:"
-          find MetlinkTransitAPI/publish_output/wwwroot
+          Get-ChildItem -Recurse MetlinkTransitAPI/publish_output/wwwroot
 
       - name: Check final wwwroot contents
         run: |
