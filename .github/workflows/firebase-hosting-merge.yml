@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          entryPoint: metlink-frontend
+          entryPoint: MetlinkTransitAPI/metlink-frontend
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
           channelId: live
