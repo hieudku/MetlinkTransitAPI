@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "https://localhost:7014",
   "dependencies": {
+    "20": "^3.1.9",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
