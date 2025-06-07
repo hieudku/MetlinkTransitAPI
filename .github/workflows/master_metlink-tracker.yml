@@ -37,10 +37,11 @@ jobs:
 
       - name: Copy React build to ASP.NET Core wwwroot
         run: |
-          if (Test-Path "MetlinkTransitAPI\wwwroot") {
-            Remove-Item -Recurse -Force "MetlinkTransitAPI\wwwroot"
+          if (!(Test-Path "MetlinkTransitAPI\wwwroot")) {
+            New-Item -ItemType Directory -Force -Path "MetlinkTransitAPI\wwwroot"
           }
-          Copy-Item -Recurse -Force "metlink-frontend\build" "MetlinkTransitAPI\wwwroot"
+          Remove-Item -Recurse -Force "MetlinkTransitAPI\wwwroot\*" -ErrorAction SilentlyContinue
+          Copy-Item -Recurse -Force "metlink-frontend\build\*" "MetlinkTransitAPI\wwwroot"
 
 
       - name: Publish ASP.NET Core app
@@ -55,9 +56,6 @@ jobs:
   deploy:
     runs-on: windows-latest
     needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write
       contents: read
