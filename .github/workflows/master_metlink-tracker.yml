@@ -38,10 +38,11 @@ jobs:
       - name: Publish ASP.NET Core app
         run: dotnet publish MetlinkTransitAPI/MetlinkTransitAPI.csproj -c Release -o publish_output
       
-      - name: Copy React build into published wwwroot
+      - name: Copy React build contents into published wwwroot
         run: |
-          Remove-Item -Recurse -Force "publish_output/wwwroot/*" -ErrorAction SilentlyContinue
-          Copy-Item -Recurse -Force "metlink-frontend/build/*" "publish_output/wwwroot/"
+         $source = Resolve-Path "metlink-frontend/build"
+         $destination = Resolve-Path "publish_output/wwwroot"
+         Copy-Item -Recurse -Force "$source\*" $destination
 
       - name: Check contents of wwwroot before publishing
         run: |
