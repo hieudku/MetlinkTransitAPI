@@ -35,13 +35,17 @@ jobs:
         working-directory: ./metlink-frontend
         run: npm run build
 
-      - name: Copy React build to ASP.NET Core wwwroot
+      - name: Publish ASP.NET Core app
+        run: dotnet publish MetlinkTransitAPI/MetlinkTransitAPI.csproj -c Release -o publish_output
+      
+      - name: Copy React build into published wwwroot
         run: |
-          if (!(Test-Path "MetlinkTransitAPI\wwwroot")) {
-            New-Item -ItemType Directory -Force -Path "MetlinkTransitAPI\wwwroot"
+          if (!(Test-Path "publish_output\wwwroot")) {
+            New-Item -ItemType Directory -Force -Path "publish_output\wwwroot"
           }
-          Remove-Item -Recurse -Force "MetlinkTransitAPI\wwwroot\*" -ErrorAction SilentlyContinue
-          Copy-Item -Recurse -Force "metlink-frontend\build\*" "MetlinkTransitAPI\wwwroot"
+          Remove-Item -Recurse -Force "publish_output\wwwroot\*" -ErrorAction SilentlyContinue
+          Copy-Item -Recurse -Force "metlink-frontend\build\*" "publish_output\wwwroot"
+
 
       - name: Check contents of wwwroot before publishing
         run: |
