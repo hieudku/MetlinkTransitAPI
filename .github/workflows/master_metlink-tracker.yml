@@ -1,6 +1,4 @@
 # Docs: https://github.com/Azure/webapps-deploy
-# https://github.com/Azure/actions
-
 name: Build and deploy fullstack Metlink Tracker
 
 on:
@@ -40,13 +38,16 @@ jobs:
 
       - name: Copy React build contents into published wwwroot
         run: |
+          $source = Resolve-Path "metlink-frontend/build"
           if (!(Test-Path "publish_output/wwwroot")) {
             New-Item -ItemType Directory -Force -Path "publish_output/wwwroot" | Out-Null
           }
-          Copy-Item -Recurse -Force "metlink-frontend/build/" "publish_output/wwwroot"
+          Copy-Item -Recurse -Force "$source\*" "publish_output/wwwroot"
 
-      - name: List final wwwroot contents (debug)
-        run: Get-ChildItem -Recurse -Path "publish_output/wwwroot"
+      - name: Check final wwwroot contents
+        run: |
+          Write-Host "---- Contents of publish_output/wwwroot ----"
+          Get-ChildItem -Path "publish_output/wwwroot"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -77,6 +78,7 @@ jobs:
           client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
 
       - name: Deploy to Azure Web App
+        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'metlink-tracker'
