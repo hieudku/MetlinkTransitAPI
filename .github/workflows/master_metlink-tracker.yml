@@ -52,10 +52,6 @@ jobs:
           Write-Host "Files inside MetlinkTransitAPI/wwwroot:"
           Get-ChildItem -Recurse -Path "MetlinkTransitAPI\wwwroot"
 
-
-      - name: Publish ASP.NET Core app
-        run: dotnet publish MetlinkTransitAPI/MetlinkTransitAPI.csproj -c Release -o publish_output
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
