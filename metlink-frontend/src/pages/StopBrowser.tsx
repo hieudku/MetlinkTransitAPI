@@ -6,8 +6,6 @@ import {
   Box,
   ThemeProvider,
   createTheme,
-  styled,
-  AppBar
 } from '@mui/material';
 import StopList from '../components/stopList';
 import PredictionPanel from '../components/predictionPanel';
