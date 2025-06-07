@@ -16,12 +16,23 @@ namespace MetlinkTransitAPI
 
             var app = builder.Build();
 
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
             // Configure the HTTP request pipeline.
 
             app.UseHttpsRedirection();
 
+            app.UseRouting();
+
             app.UseAuthorization();
 
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
 
             app.MapControllers();
 
