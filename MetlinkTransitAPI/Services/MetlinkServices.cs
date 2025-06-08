@@ -23,7 +23,16 @@ namespace MetlinkTransitAPI.Services
 
             if (string.IsNullOrEmpty(baseUrl))
                 throw new Exception("BaseUrl is missing in configuration");
-
+            try
+            {
+                _httpClient.BaseAddress = new Uri(baseUrl.Trim());
+                Console.WriteLine("Successfully set BaseAddress to: " + _httpClient.BaseAddress);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to set BaseAddress: " + ex.Message);
+                throw;
+            }
 
             _httpClient.BaseAddress = new Uri(baseUrl);
             _httpClient.DefaultRequestHeaders.Add("x-api-key", _config["Metlink:ApiKey"]);
