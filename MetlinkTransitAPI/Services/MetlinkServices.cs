@@ -18,6 +18,8 @@ namespace MetlinkTransitAPI.Services
 
             var baseUrl = _config["Metlink:BaseUrl"];
             Console.WriteLine("BaseUrl from config: " + baseUrl);
+            Console.WriteLine("Base URL: " + _httpClient.BaseAddress);
+            Console.WriteLine("API KEY PRESENT: " + !string.IsNullOrWhiteSpace(_config["Metlink:ApiKey"]));
 
             if (string.IsNullOrEmpty(baseUrl))
                 throw new Exception("BaseUrl is missing in configuration");
