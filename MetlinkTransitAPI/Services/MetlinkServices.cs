@@ -43,8 +43,34 @@ namespace MetlinkTransitAPI.Services
             var response = await _httpClient.GetAsync($"stop-predictions?stop_id={stopId}");
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadAsStringAsync();
+            var json = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(json);
+
+            var predictions = new List<object>();
+
+            foreach (var item in doc.RootElement.GetProperty("departures").EnumerateArray())
+            {
+                var departure = item.GetProperty("departure");
+                var service = item.TryGetProperty("service", out var svc) ? svc : default;
+
+                predictions.Add(new
+                {
+                    departure = new
+                    {
+                        scheduled = departure.TryGetProperty("scheduled", out var sched) ? sched.GetString() : null,
+                        expected = departure.TryGetProperty("expected", out var exp) ? exp.GetString() : null
+                    },
+                    route = new
+                    {
+                        short_name = service.ValueKind != JsonValueKind.Undefined &&
+                                     service.TryGetProperty("line", out var lineProp) ? lineProp.GetString() : null
+                    }
+                });
+            }
+
+            return JsonSerializer.Serialize(predictions);
         }
+
 
         /*
          * STOPS

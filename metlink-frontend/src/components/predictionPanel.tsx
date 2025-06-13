@@ -1,8 +1,13 @@
 import React from 'react';
 
 type Prediction = {
-  departure: string;
-  line: string;
+  departure: {
+    scheduled?: string;
+    expected?: string;
+  };
+  route?: {
+    short_name?: string;
+  };
 };
 
 type Props = {
@@ -21,7 +26,12 @@ export default function PredictionPanel({ predictions, stopId, stopName }: Props
         <ul>
           {predictions.map((p, i) => (
             <li key={i}>
-            {p.line ? `Line ${p.line}` : 'Unknown line'} departing at {p.departure || 'Unknown time'}
+              {p.route?.short_name ? `Line ${p.route.short_name}` : 'Unknown line'} departing at{' '}
+              {p.departure?.expected
+                ? new Date(p.departure.expected).toLocaleTimeString()
+                : p.departure?.scheduled
+                ? new Date(p.departure.scheduled).toLocaleTimeString()
+                : 'Unknown time'}
             </li>
           ))}
         </ul>

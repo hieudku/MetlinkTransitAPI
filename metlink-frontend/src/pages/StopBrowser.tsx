@@ -10,17 +10,13 @@ import {
 import StopList from '../components/stopList';
 import PredictionPanel from '../components/predictionPanel';
 import '../App.css';
+import { Prediction } from '../types';
 
 type Stop = {
   stopId: string;
   stopName: string;
   latitude: number;
   longitude: number;
-};
-
-type Prediction = {
-  departure: string;
-  line: string;
 };
 
 const theme = createTheme({
@@ -73,8 +69,13 @@ const StopBrowser = () => {
       .then((res) => res.json())
       .then((data) => {
         const departures = data.departures?.map((d: any) => ({
-          departure: d.aimedDeparture,
-          line: d.service?.line,
+          departure: {
+            scheduled: d.departure?.aimed,
+            expected: d.departure?.expected,
+          },
+          route: {
+            short_name: d.service?.line,
+          },
         })) || [];
         setPredictions(departures);
       });
