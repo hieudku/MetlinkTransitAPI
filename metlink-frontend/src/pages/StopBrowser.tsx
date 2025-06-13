@@ -68,16 +68,7 @@ const StopBrowser = () => {
     fetch(`/api/metlink/stop-predictions/${selectedStop}`)
       .then((res) => res.json())
       .then((data) => {
-        const departures = data.departures?.map((d: any) => ({
-          departure: {
-            scheduled: d.departure?.aimed,
-            expected: d.departure?.expected,
-          },
-          route: {
-            short_name: d.service?.line,
-          },
-        })) || [];
-        setPredictions(departures);
+        setPredictions(data);
       });
   }, [selectedStop]);
 
