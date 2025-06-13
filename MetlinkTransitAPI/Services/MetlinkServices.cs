@@ -38,7 +38,7 @@ namespace MetlinkTransitAPI.Services
             _httpClient.DefaultRequestHeaders.Add("x-api-key", _config["Metlink:ApiKey"]);
         }
 
-        public async Task<string> GetStopPredictionsAsync(string stopId)
+        public async Task<List<PredictionDto>> GetStopPredictionsAsync(string stopId)
         {
             var response = await _httpClient.GetAsync($"stop-predictions?stop_id={stopId}");
             response.EnsureSuccessStatusCode();
@@ -46,30 +46,23 @@ namespace MetlinkTransitAPI.Services
             var json = await response.Content.ReadAsStringAsync();
             using var doc = JsonDocument.Parse(json);
 
-            var predictions = new List<object>();
-
+            var list = new List<PredictionDto>();
             foreach (var item in doc.RootElement.GetProperty("departures").EnumerateArray())
             {
                 var departure = item.GetProperty("departure");
-                var service = item.TryGetProperty("service", out var svc) ? svc : default;
+                var service = item.GetProperty("service");
 
-                predictions.Add(new
+                list.Add(new PredictionDto
                 {
-                    departure = new
-                    {
-                        scheduled = departure.TryGetProperty("scheduled", out var sched) ? sched.GetString() : null,
-                        expected = departure.TryGetProperty("expected", out var exp) ? exp.GetString() : null
-                    },
-                    route = new
-                    {
-                        short_name = service.ValueKind != JsonValueKind.Undefined &&
-                                     service.TryGetProperty("line", out var lineProp) ? lineProp.GetString() : null
-                    }
+                    ExpectedDeparture = departure.TryGetProperty("expected", out var expectedProp) ? expectedProp.GetString() : null,
+                    ScheduledDeparture = departure.TryGetProperty("aimed", out var scheduledProp) ? scheduledProp.GetString() : null,
+                    Line = service.TryGetProperty("line", out var lineProp) ? lineProp.GetString() : null
                 });
             }
 
-            return JsonSerializer.Serialize(predictions);
+            return list;
         }
+
 
 
         /*

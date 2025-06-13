@@ -19,9 +19,10 @@ namespace MetlinkTransitAPI.Controllers
         [HttpGet("stop-predictions/{stopId}")]
         public async Task<IActionResult> GetPredictions(string stopId)
         {
-            var data = await _service.GetStopPredictionsAsync(stopId);
-            return Content(data, "application/json");
+            var parsed = await _service.GetStopPredictionsAsync(stopId);
+            return Ok(parsed);
         }
+
 
 
         [HttpGet("stops")]
